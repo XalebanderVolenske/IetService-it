@@ -41,7 +41,7 @@ public class RestConfigIT {
     public void fetchTickets() {
         Response response = this
                 .sut
-                .path("tickets")
+                .path("ticket")
                 .request(MediaType.APPLICATION_JSON)
                 .get();
         // Testen, ob Statuscode = 200 ok
@@ -49,10 +49,134 @@ public class RestConfigIT {
         JsonArray payload = response.readEntity(JsonArray.class);
         System.out.println(payload);
         // Testen, ob Anzahl der elemente im JsonArray ok
-        assertThat(payload.size(),is(4));
+        assertThat(payload.size(),is(18));
         // Testen, ob die JsonObjekte ok
         JsonObject ticket = payload.getJsonObject(0);
-        assertThat(ticket.getString("answerDate"),is("12.05.2017"));
+        assertThat(ticket.getString("answerDate"),is("2018-10-25T15:00:00"));
     }
+
+    @Test
+    public void fetchDiaryEntries() {
+        Response response = this
+                .sut
+                .path("diaryEntry")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        // Testen, ob Statuscode = 200 ok
+        assertThat(response.getStatus(), is(200));
+        JsonArray payload = response.readEntity(JsonArray.class);
+        System.out.println(payload);
+        // Testen, ob Anzahl der elemente im JsonArray ok
+        assertThat(payload.size(),is(3));
+        // Testen, ob die JsonObjekte ok
+        JsonObject ticket = payload.getJsonObject(0);
+        assertThat(ticket.getString("createdDate"),is("28.10.2018 15:30"));
+    }
+
+    @Test
+    public void fetchDepartments() {
+        Response response = this
+                .sut
+                .path("department")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        // Testen, ob Statuscode = 200 ok
+        assertThat(response.getStatus(), is(200));
+        JsonArray payload = response.readEntity(JsonArray.class);
+        System.out.println(payload);
+        // Testen, ob Anzahl der elemente im JsonArray ok
+        assertThat(payload.size(),is(3));
+        // Testen, ob die JsonObjekte ok
+        JsonObject ticket = payload.getJsonObject(0);
+        assertThat(ticket.getString("name"),is("Wohnbaufoerderung"));
+    }
+
+    @Test
+    public void fetchUsers() {
+        Response response = this
+                .sut
+                .path("user")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        // Testen, ob Statuscode = 200 ok
+        assertThat(response.getStatus(), is(200));
+        JsonArray payload = response.readEntity(JsonArray.class);
+        System.out.println(payload);
+        // Testen, ob Anzahl der elemente im JsonArray ok
+        assertThat(payload.size(),is(10));
+        // Testen, ob die JsonObjekte ok
+        JsonObject ticket = payload.getJsonObject(0);
+        assertThat(ticket.getString("address"),is("Bahnhofplatz 1"));
+    }
+
+    @Test
+    public void fetchCIs() {
+        Response response = this
+                .sut
+                .path("ci")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        // Testen, ob Statuscode = 200 ok
+        assertThat(response.getStatus(), is(200));
+        JsonArray payload = response.readEntity(JsonArray.class);
+        System.out.println(payload);
+        // Testen, ob Anzahl der elemente im JsonArray ok
+        assertThat(payload.size(),is(0));
+    }
+
+    @Test
+    public void fetchTicketsFromDepartment() {
+        Response response = this
+                .sut
+                .path("departmentticket/1")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        // Testen, ob Statuscode = 200 ok
+        assertThat(response.getStatus(), is(200));
+        JsonArray payload = response.readEntity(JsonArray.class);
+        System.out.println(payload);
+        // Testen, ob Anzahl der elemente im JsonArray ok
+        assertThat(payload.size(),is(15));
+        // Testen, ob die JsonObjekte ok
+        JsonObject ticket = payload.getJsonObject(0);
+        assertThat(ticket.getString("answerDate"),is("2018-10-25T15:00:00"));
+    }
+
+    @Test
+    public void fetchTicketsByDateRangeFromUser() {
+        Response response = this
+                .sut
+                .path("ticket/1/2018-10-02T15:00:00/2018-10-16T15:00:00")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        // Testen, ob Statuscode = 200 ok
+        assertThat(response.getStatus(), is(200));
+        JsonArray payload = response.readEntity(JsonArray.class);
+        System.out.println(payload);
+        // Testen, ob Anzahl der elemente im JsonArray ok
+        assertThat(payload.size(),is(2));
+        // Testen, ob die JsonObjekte ok
+        JsonObject ticket = payload.getJsonObject(0);
+        assertThat(ticket.getString("answerDate"),is("2018-11-01T07:30:00"));
+    }
+
+    @Test
+    public void fetchTicketDiaryEntries() {
+        Response response = this
+                .sut
+                .path("ticketdiary/2")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        // Testen, ob Statuscode = 200 ok
+        assertThat(response.getStatus(), is(200));
+        JsonArray payload = response.readEntity(JsonArray.class);
+        System.out.println(payload);
+        // Testen, ob Anzahl der elemente im JsonArray ok
+        assertThat(payload.size(),is(3));
+        // Testen, ob die JsonObjekte ok
+        JsonObject ticket = payload.getJsonObject(0);
+        assertThat(ticket.getString("createdDate"),is("28.10.2018 15:30"));
+    }
+
 
 }
